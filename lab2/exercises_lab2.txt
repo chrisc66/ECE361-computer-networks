@@ -1,0 +1,188 @@
+# Zichun Chong, 1002970822
+# Jingwu Hou, 1002131034
+
+
+1. Briefly describe how ping uses ICMP to find out about IP hosts and the 
+information that it collects.
+
+Ping operates by sending Internet Control Message Protocol (ICMP) echo request packets to the target host and waiting for an ICMP echo reply. ICMP packages containes IP addresses and information.
+
+
+2. Briefly describe how traceroute uses UDP and ICMP together to determine 
+a route to a specified host.
+
+The time-to-live (TTL) value, also known as hop limit, is used in determining the intermediate routers being traversed towards the destination. Traceroute sends packets with TTL values that gradually increase from packet to packet, starting with TTL value of one. Routers decrement TTL values of packets by one when routing and discard packets whose TTL value has reached zero, returning the ICMP error message ICMP Time Exceeded.[6] For the first set of packets, the first router receives the packet, decrements the TTL value and drops the packet because it then has TTL value zero. The router sends an ICMP Time Exceeded message back to the source. The next set of packets are given a TTL value of two, so the first router forwards the packets, but the second router drops them and replies with ICMP Time Exceeded. Proceeding in this way, traceroute uses the returned ICMP Time Exceeded messages to build a list of routers that packets traverse, until the destination is reached and returns an ICMP Echo Reply message.
+
+
+3. Use ping to find values for minimum, average and maximum round trip time to
+www.utoronto.ca​. Compare this to the min/avg/max round trip time to
+www.163.com (free e-mail service in China). What causes the difference in
+round trip time to the two servers?
+
+% ping -c 10 www.utoronto.ca
+rtt min/avg/max/mdev = 0.894/1.435/3.524/0.797 ms
+% ping -c 10 www.163.com
+rtt min/avg/max/mdev = 69.713/70.503/73.179/1.090 ms
+
+www.163.com server is located in China,
+www.utoronto.ca server is located in Toronto 
+the distance causes the timing difference
+
+
+4. The distance from Toronto to China is approximately 10,000 km. If light
+travels at 3x10​ 8 m/s what is the approximate minimum round trip time from
+your machine to ​www.163.com​? Compare this to the average round trip time
+found in question 1. Explain your findings.
+
+time = distance / speed = 10e6 / 3e8 = 33 ms
+the approximate minimum round trip time is 33*2ms = 66ms
+the experimental round trip time is 69ms
+the information is traveling at approximatly the speed of light
+
+
+5. Estimate the round trip ping time to 
+www.bbc.co.uk​ (British News site)?
+
+assume the server is located at London UK, and the distance from Toronto to London is 5700km
+time = distance / speed = 5.7e6 / 3e8 = 19 ms
+the approximate minimum round trip time is 19*2ms = 38ms
+
+
+6. Find the actual round trip ping time to ​www.bbc.co.uk and compare it to your
+estimate. Explain your findings.
+
+% ping -c 10 www.bbc.co.uk
+rtt min/avg/max/mdev = 76.643/77.006/78.133/0.394 ms
+the package is delayed significantly since it is not sent directly from Toronto to UK, the actual travel distance is much longer
+
+
+7. Find the option in ping which lets you change the packet size. Now ping a
+machine with 10 byte packets and repeat for 10,000 byte packets and
+compare the round trip times.
+
+% ping -c 10 -s 16 www.utoronto.ca
+rtt min/avg/max/mdev = 0.895/1.079/1.906/0.298 ms
+% ping -c 10 -s 10000 www.utoronto.ca
+rtt min/avg/max/mdev = 1.877/2.323/2.789/0.300 ms
+the round trip time increases as size of packet increases
+
+
+8. What is the default packet size for ping?
+
+default size is 64 bytes (56 bytes data + 8 bytes header)
+
+
+9. Issue the following command to find the server hosting the Harvard website:
+nslookup www.harvard.com
+● The first part of the response informs you which DNS server handled your
+request
+● The second part informs you of the IP address corresponding to the
+domain you queried
+● What is the IP address of the DNS server you queried and what is the IP
+address of the server hosting w
+ww.harvard.com​ ?
+
+% nslookup www.harvard.com
+Server:		128.100.13.50
+Address:	128.100.13.50#53
+
+Non-authoritative answer:
+www.harvard.com	canonical name = harvard.com.
+Name:	harvard.com
+Address: 64.64.9.47
+
+DNS server IP address: 128.100.13.50
+host server IP address: 64.64.9.47
+
+
+10. Use the traceroute command to find the # of hops to the DNS server and web
+server you found in question #2. What is the reason for the difference in
+number of hops? Is the DNS server likely a Local Name Server or a Root Name
+Server?
+
+% traceroute www.google.com
+10 hops for www.google.ca
+The path of each run might be different
+DNS server is likely RNS
+
+
+11. Use the command: ​ netstat --tcp ​ to find the number of active TCP
+connections on your machine.
+
+% netstat --tcp
+Active Internet connections (w/o servers)
+Proto Recv-Q Send-Q Local Address           Foreign Address         State      
+tcp        0      0 localhost:33500         localhost:5901          ESTABLISHED
+tcp        0      0 ug160.eecg.toront:42450 8.39.55.144:https       ESTABLISHED
+tcp        0      0 ug160.eecg.toront:54806 dfw06s38-in-f4.1e:https ESTABLISHED
+tcp        0      0 ug160.eecg.toronto.:ssh public-255-77.nat:45408 ESTABLISHED
+tcp        0      0 ug160.eecg.toront:53302 shadow.eecg.toront:4506 TIME_WAIT  
+tcp        0      0 ug160.eecg.toronto.:958 pacific.eecg.toron:4045 ESTABLISHED
+tcp        0      0 ug160.eecg.toront:34776 yyz10s04-in-f14.1:https ESTABLISHED
+tcp        0      0 ug160.eecg.toronto.:ssh public-246-222.na:52958 ESTABLISHED
+tcp        0      0 ug160.eecg.toront:42458 8.39.55.144:https       ESTABLISHED
+tcp        0      0 ug160.eecg.toront:50758 alfa.eecg.toro:cfengine TIME_WAIT  
+tcp        0      0 ug160.eecg.toront:42442 8.39.55.144:https       ESTABLISHED
+tcp        0      0 localhost:33132         localhost:5902          ESTABLISHED
+tcp        0      0 ug160.eecg.toronto.:ssh public-246-222.na:52925 ESTABLISHED
+tcp        0      0 ug160.eecg.toront:53304 shadow.eecg.toront:4506 TIME_WAIT  
+tcp        0      0 ug160.eecg.toronto.:732 footwork.eecg.toron:nfs ESTABLISHED
+tcp        0      0 ug160.eecg.toront:56082 shadow.eecg.toront:4505 ESTABLISHED
+tcp        0      0 ug160.eecg.toront:53090 pacific.eecg.tor:sunrpc TIME_WAIT  
+tcp        0      0 ug160.eecg.toront:34774 yyz10s04-in-f14.1:https ESTABLISHED
+tcp        0      0 localhost:5901          localhost:33500         ESTABLISHED
+tcp        0      0 localhost:5902          localhost:33132         ESTABLISHED
+tcp        0      0 ug160.eecg.toronto.:849 pacific.eecg.toront:nfs ESTABLISHED
+
+17 active (established) TCP connections
+4 wait TCP connections
+
+
+12. Open a browser and connect to ​www.cnn.com​. Now issue the same
+command as in question ​ 11 and find the TCP entry corresponding to your new
+http session. Explain your findings.
+
+% netstat --tcp
+1 active connections
+
+
+
+13. Use the command: ​ netstat --statistics ​ to answer the following
+questions:
+a) How many ICMP echo requests did your machine receive?
+b) How many ICMP echo replies did your machine send?
+c) How many UDP packets to unknown ports did your machine receive?
+
+% netstat --statistics
+echo requests: 27
+echo replies: 643
+132 packets to unknown port received
+
+
+14. Use the command: ​ ip addr to find the Ethernet address and IP address of
+your machine. What are the addresses?
+
+% ip addr
+IP: 128.100.13.160/24
+ethernet: 98:90:96:ca:7a:6c
+
+
+15. Perform an ​ nslookup on the IP address of your machine to determine the
+hostname of your machine. What is the hostname?
+
+% nsloopup 128.100.13.160
+ug160.eecg.toronto.edu.
+
+
+
+16. Use the command: ​ ip route show ​ to inspect the local routing table. There
+should be two entries. Explain what each of the entries means.
+
+% ip route show
+default via 128.100.13.254 dev eno1 
+// packets outside local network use gateway address 128.100.13.254
+128.100.13.0/24 dev eno1 proto kernel scope link src 128.100.13.160
+// packets inside local network sends directly to 128.100.13.160 
+
+
+

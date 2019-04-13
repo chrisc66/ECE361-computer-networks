@@ -1,0 +1,26 @@
+# Zichun Chong, 1002970822
+# Jingwu Hou, 1002131034
+
+we used an array to store the time-delay of each package send by computing the total delay time divided by 2 to obtain the one-way propagation delay. then using the formula 
+T = Tprop + #bits / Bitrate = Tprop + Tframe,  with T1 and T2 to solve for Bitrate and Tframe.  
+
+Example from the lab:
+
+0: Enter text:ads
+talker: sent 3 bytes to 0.0.0.0
+listener: packet is 3 bytes long
+listener: packet contains "ads"
+time: 1048290 microseconds​
+
+1: Enter text:cbvx
+talker: sent 4 bytes to 0.0.0.0
+listener: packet is 4 bytes long
+listener: packet contains "cbvx"
+time: 1064284 microseconds​
+
+Propagation delay: 524144.999625 micro-seconds
+Byte rate: 0.000125 bytes per micro-second
+
+//Equations
+	T = Tprop + (4-3 bytes)/(1064284 - 1048290 micro-sec) * #bits
+	Tprop = T - Tframe = 1048290 - 3 bytes / [(4-3 bytes)/(1064284 - 1048290 micro-sec)] = 524144.999625 micro-seconds

@@ -1,0 +1,2 @@
+client.o: client.c includes.h
+server.o: server.c includes.h

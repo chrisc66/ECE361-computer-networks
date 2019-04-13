@@ -1,0 +1,82 @@
+# Zichun Chong 1002970822
+# Jingwu Hou 1002131034
+
+
+
+Part 1.1 Manual Operation of Network Data Plane
+
+
+
+Q1. Do you observe any successful pings?
+
+No, all destination hosts are unreachable.
+Four requests, ICMP protocol, lengh 64 bytes, 100% packet lost
+
+
+
+Q2. Dump the current state of the packet forwarding table in the switch by typing: 
+​
+$ sudo ovs-ofctl dump-flows s1
+  NXST_FLOW reply (xid=0x4)
+
+Nothing is dumped since there is no flows in the netwok. 
+After trying to pinging from h1 to h2, all destination hosts are unsuccessful. 
+Four requests, ICMP protocol, lengh 64 bytes, 100% packet lost
+
+
+
+Q3. Dump the state of the packet forwarding table again. Note the differences and interpret the flow table.
+​
+before dumping flows in the network, run mininet
+Yes, all requests are still successful. 
+Four requests, ICMP protocol, length 64 bytes, 0% packet lost
+time (0.165ms, 0.046ms, 0.045ms, 0.038ms)
+
+$ sudo ovs-ofctl dump-flows s1
+  NXST_FLOW reply (xid=0x4)
+  cookie=0x0, duration=92.053s, table=0, n_packets=6, n_bytes=476, in_port=1 actions=output:2
+  cookie=0x0, duration=84.558s, table=0, n_packets=6, n_bytes=476, in_port=2 actions=output:1
+
+The above two flows are dumped/stoped, however, the connections still exist in the network/switch.
+
+
+
+Q4. Now in the Mininet terminal, try pinging from h1 to h2 again. Are the pings successful? Why?
+
+Yes, all requests are still successful. 
+Four requests, ICMP protocol, length 64 bytes, 0% packet lost
+time (0.208ms, 0.053ms, 0.052ms, 0.046ms)
+
+Although the flows are stopped, the connections still exist in the network. It takes longer time to setup the flow when a new request comes up, but the connection path is still reachable.
+
+
+
+
+
+Part 1.2 Starting Network Controller
+
+
+
+Q5. Dump the state of the packet forwarding table again. Note the differences and see if you can interpret the flow table.
+
+$ sudo ovs-ofctl dump-flows s1
+  NXST_FLOW reply (xid=0x4)
+  cookie=0x0, duration=7.552s, table=0, n_packets=6, n_bytes=476, in_port=2 XXXXX actions=output:1
+  cookie=0x0, duration=7.510s, table=0, n_packets=6, n_bytes=476, in_port=1 XXXXX actions=output:2
+  cookie=0x0, duration=7.554s, table=0, n_packets=6, n_bytes=476, in_port=1 XXXXX actions=output:FLOOD
+  cookie=0x0, duration=10.22s, table=0, n_packets=6, n_bytes=476, XXXXX actions=output:CONTROLLER:51
+
+After starting the controller switch, the switch generated two flows (h1 to h2) (h2 to h1), and two extra flows that we did not create in previous part (h1 to FLOOD) (SWITCH to CONTROLLER). As a result, we are able to connect the controller, switch, h1 and h2. 
+
+
+
+Q6. With the controller started, dump of the state of the packet forwarding table, then ping from any host to any other host, and dump the packet forwarding table again to note the differences. Record these differences and interpret them.
+
+mininet> h1 ping -c4 h2
+Four requests, ICMP protocol, length 64 bytes, 0% packet lost
+time (82.6ms, 0.047ms, 0.046ms, 0.050ms)
+
+All package forwarding is successful, from any host to any other host. The switch is able to handle every requests from one host to another. The first request takes significantly longer time than the rest three requests, since the switch has to setup flows before actual package forwarding in the first request. 
+
+
+

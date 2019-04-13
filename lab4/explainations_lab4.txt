@@ -1,0 +1,5 @@
+# zichun chong 1002970822
+# jingwu hou 1002131034
+
+
+we were intended to use select to achieve concurrency. Select put receive to sleep while waiting on I/O to complete. Whoever finishes I/O first gets to run first. We use select on server side and multi-threading on the client side. Multi-threading has the adventage of using less memory but it uses more CPU, suitable for more client connections. Select uses more memory but less CPU, suitable for less client connections.

@@ -1,0 +1,66 @@
+# Zichun Chong, 1002970822
+# Jingwu Hou, 1002131034
+
+
+
+Part 1
+
+1. What is the IP address of the host?
+	192.168.0.107
+2. What is the IP address of the router?
+	192.168.0.1
+3. What protocol is used to resolve the website domain name?
+	DNS
+4. What is the IP address of the HTTP server?
+	128.100.72.45
+5. Which transport layer protocol is used by DNS?
+	UDP
+6. Which well-known port is used when contacting the DNS server?
+	53
+7. Which ephemeral port does the host initiating the DNS query use?
+	54883
+8. What is the Ethernet address of the host?
+	d8:30:62:62:70:5f
+9. What is the Ethernet address of the router?
+	00:13:46:a7:d3:02
+10. How long does the 3-way handshake take to complete?
+	0.025248s - 0.014746s = 0.010502s
+11. Which website is the host machine trying to access?
+	www.utoronto.ca
+12. What version of HTTP is the browser running?
+	HTTP 1.1
+13. In the filter box enter the following query: ​ udp.dstport==53 ​ and click apply. What does the query mean and what are the results?
+	inside DNS, DNS port = 53
+14. Go to ​ Statistics - ​ > ​ Protocol Hierarchy ​ and answer:
+A. What percentage of frames are Ethernet frames?
+	100%
+B. Which transport layer protocols were present and which one made up more of the traffic?
+	TCP 96.7%, UDP 3.3%, TCP has more traffic
+15. Now plot the UDP and TCP traffic, answer the following questions:
+A. What is the highest number of TCP packets/sec observed? Around what time (second)?
+	1330 packets/sec @ 1s
+B. What is the highest number of UDP packets/sec observed? Around what time (second)?
+	73 packets/sec @ 5s
+C. What is the highest number of HTTP bits/sec observed? Around what time (second)?
+	2.232e5 bits/sec @ 1s
+
+
+
+
+
+Part 2
+
+1. What is the protocol in packet #50 and what is it used for?
+	SIP/SDP real time media initialization
+2. What is the protocol in packet #55 and what is it used for?
+	RTP streaming media
+3. Examine the details of packet #55 and study the “payload type”. What is likely in this payload?
+	ITU-T G.711 PCMU(0)	
+	payload type PCMU
+	contains audio
+4. How much time elapses from packet #55 to packet #1329? How much Bytes has been used during this period? ​ Hint:​ Use IO Graph to answers these questions
+	178.954983s - 166.095301s = 12.859682s
+	22000 bytes/sec (approximation from plot)
+	12.86s * 22000 bytes/s ~= 283 kB
+5. What is going on in this capture?
+	audio streaming / online calling
