@@ -1,5 +1,7 @@
 # ECE361 Computer Networks
 
+Spring 2019
+
 Lab 1 Wireshark
 
 Lab 2 Network concepts
